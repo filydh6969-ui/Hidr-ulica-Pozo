@@ -9,27 +9,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    
+    - name: Clonar repositorio
+      uses: actions/checkout@v4
+
     - name: Configurar Java
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: '17'
-        
+
     - name: Configurar Flutter
       uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.19.x'
         channel: 'stable'
-        
-    - name: Crear estructura Flutter
+
+    - name: Reconstruir proyecto Flutter
       run: |
-        flutter create . --overwrite
-        
+        flutter create . --platforms=android --force
+        flutter pub get
+
     - name: Compilar APK Release
       run: flutter build apk --release
-      
+
     - name: Subir APK
       uses: actions/upload-artifact@v4
       with:
