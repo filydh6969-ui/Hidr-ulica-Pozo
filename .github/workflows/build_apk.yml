@@ -26,7 +26,7 @@ jobs:
 
     - name: Reconstruir proyecto Flutter
       run: |
-        flutter create . --platforms=android --force
+        flutter create . --platforms=android --overwrite
         flutter pub get
 
     - name: Compilar APK Release
