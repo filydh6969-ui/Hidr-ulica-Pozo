@@ -1,0 +1,37 @@
+name: Compilar APK Android
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Configurar Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+        
+    - name: Configurar Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.x'
+        channel: 'stable'
+        
+    - name: Crear estructura Flutter
+      run: |
+        flutter create . --overwrite
+        
+    - name: Compilar APK Release
+      run: flutter build apk --release
+      
+    - name: Subir APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: wellbore-simulator-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
