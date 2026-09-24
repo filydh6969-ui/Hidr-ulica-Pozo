@@ -27,14 +27,15 @@ jobs:
         flutter-version: '3.19.x'
         channel: 'stable'
 
-    - name: Habilitar Web y Construir
+    - name: Construir aplicacion Web
       run: |
         flutter create . --platforms=web --force
         flutter pub get
-        flutter build web --release --base-href "/${{ github.event.repository.name }}/"
+        flutter build web --release
 
-    - name: Desplegar a GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
+    - name: Publicar en GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/web
+        force_orphan: true
